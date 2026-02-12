@@ -1,34 +1,24 @@
-// PredictionCard.jsx — Reusable ML Prediction Display Component (Task 1 - Reusable Component #3)
-// Uses props: label, result, confidence, purok
-
-function PredictionCard({ label, result, confidence, purok }) {
-  const getConfidenceClass = (score) => {
-    if (score >= 85) return "confidence--high";
-    if (score >= 70) return "confidence--medium";
-    return "confidence--low";
-  };
-
+// src/components/PredictionCard.jsx
+function PredictionCard({ label, result, confidence, purok, severity }) {
+  const cls = confidence >= 85 ? "conf-hi" : confidence >= 70 ? "conf-md" : "conf-lo";
   return (
-    <section className="prediction-card">
-      <div className="prediction-header">
-        <span className="prediction-label">{label}</span>
-        <span className="prediction-purok">{purok}</span>
-      </div>
-      <div className="prediction-result">{result}</div>
-      <div className="prediction-footer">
-        <span className="confidence-label">Confidence</span>
-        <div className="confidence-bar-wrap">
-          <div
-            className="confidence-bar"
-            style={{ width: `${confidence}%` }}
-          />
-        </div>
-        <span className={`confidence-value ${getConfidenceClass(confidence)}`}>
-          {confidence}%
+    <section className="pred-card">
+      <div className="pred-card-hdr">
+        <span className="pred-lbl">{label}</span>
+        <span className={`pred-sev ${severity === "high" ? "sev-high" : "sev-medium"}`}>
+          {severity}
         </span>
+      </div>
+      <div className="pred-result">{result}</div>
+      <div style={{ fontSize: ".72rem", color: "var(--text3)" }}>{purok}</div>
+      <div className="pred-footer">
+        <span className="conf-lbl">Confidence</span>
+        <div className="conf-bar-wrap">
+          <div className="conf-bar" style={{ width: `${confidence}%` }} />
+        </div>
+        <span className={`conf-val ${cls}`}>{confidence}%</span>
       </div>
     </section>
   );
 }
-
 export default PredictionCard;

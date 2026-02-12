@@ -1,28 +1,20 @@
-// StatCard.jsx — Reusable Dashboard Stat Card Component (Task 1 - Reusable Component #2)
-// Uses props: icon, label, value, change
-
-function StatCard({ icon, label, value, change }) {
-  const isPositive = change && change.startsWith("+");
-  const isNegative = change && change.startsWith("-");
-
+// src/components/StatCard.jsx
+function StatCard({ icon, label, value, change, color }) {
+  const isUp = change && change.startsWith("+");
+  const isDown = change && change.startsWith("-");
   return (
     <article className="stat-card">
-      <div className="stat-icon">{icon}</div>
-      <div className="stat-body">
-        <span className="stat-label">{label}</span>
-        <span className="stat-value">{value}</span>
+      <div className="stat-ico" style={{ color }}>{icon}</div>
+      <div>
+        <div className="stat-lbl">{label}</div>
+        <div className="stat-val" style={{ color }}>{value}</div>
         {change && (
-          <span
-            className={`stat-change ${
-              isPositive ? "stat-change--up" : isNegative ? "stat-change--down" : ""
-            }`}
-          >
+          <div className="stat-chg" style={{ color: isUp ? "#20c070" : isDown ? "#f07830" : undefined }}>
             {change}
-          </span>
+          </div>
         )}
       </div>
     </article>
   );
 }
-
 export default StatCard;

@@ -1,85 +1,63 @@
-// Login.jsx – Admin Login Page
+// src/pages/Login.jsx
 import { useState } from "react";
+import { ADMIN_CREDENTIALS } from "../data/residents";
 
 function Login({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
-    setIsLoading(true);
-
-    // Simulate API call delay
-    setTimeout(() => {
-      const result = onLogin(username, password);
-      if (!result.success) {
-        setError(result.error);
-      }
-      setIsLoading(false);
-    }, 500);
+    if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+      onLogin();
+    } else {
+      setError("Invalid username or password. Please try again.");
+    }
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <div className="login-header">
-          <div className="login-logo">◈</div>
-          <h1 className="login-title">IRPSS Admin</h1>
-          <p className="login-subtitle">Intelligent Resident Profiling System</p>
+    <div className="login-wrap">
+      <div className="login-card">
+        <div className="login-logo">
+          <div className="login-logo-icon">IR</div>
+          <div className="login-logo-text">
+            <h1>IRPSS</h1>
+            <span>Intelligent Resident Profiling & Segmentation System</span>
+          </div>
         </div>
+        <div className="login-title">Admin Sign In</div>
+        <div className="login-sub">Barangay Officials & Staff Access Only</div>
 
-        <form className="login-form" onSubmit={handleSubmit}>
-          {error && (
-            <div className="login-error">
-              {error}
-            </div>
-          )}
+        {error && <div className="login-err">⚠️ {error}</div>}
 
-          <div className="form-group">
-            <label className="form-label">Username</label>
+        <form onSubmit={handleSubmit}>
+          <div className="login-field">
+            <label>Username</label>
             <input
               type="text"
-              className="form-input"
               placeholder="Enter your username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              autoFocus
+              onChange={e => setUsername(e.target.value)}
+              autoComplete="username"
             />
           </div>
-
-          <div className="form-group">
-            <label className="form-label">Password</label>
+          <div className="login-field">
+            <label>Password</label>
             <input
               type="password"
-              className="form-input"
               placeholder="Enter your password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              onChange={e => setPassword(e.target.value)}
+              autoComplete="current-password"
             />
           </div>
-
-          <button 
-            type="submit" 
-            className="login-button"
-            disabled={isLoading}
-          >
-            {isLoading ? "Signing in..." : "Sign In"}
-          </button>
+          <button type="submit" className="login-btn">Sign In to Dashboard</button>
         </form>
 
-        <div className="demo-credentials">
-          <strong>Demo Credentials:</strong><br />
-          Username: <strong>admin</strong><br />
-          Password: <strong>admin123</strong>
-        </div>
+        <div className="login-hint">Demo credentials: admin / brgy2026</div>
       </div>
     </div>
   );
 }
-
 export default Login;

@@ -1,63 +1,41 @@
-// ResidentCard.jsx — Reusable Resident Profile Card Component (Task 1 - Reusable Component #4)
-// Uses props: resident, onViewProfile
-
-function ResidentCard({ resident, onViewProfile }) {
-  const getRiskClass = (risk) => {
-    if (risk === "High") return "risk--high";
-    if (risk === "Medium") return "risk--medium";
-    return "risk--low";
-  };
-
-  const getStatusClass = (status) => {
-    return status === "Active" ? "status--active" : "status--followup";
-  };
-
+// src/components/ResidentCard.jsx
+function ResidentCard({ resident, onView, onEdit, onHistory, onDelete }) {
+  const initials = resident.name.split(" ").map(n => n[0]).join("").slice(0, 2);
+  const riskCls = resident.riskLevel === "High" ? "rb-high" : resident.riskLevel === "Medium" ? "rb-medium" : "rb-low";
+  const stsCls = resident.status === "Active" ? "ss-active" : "ss-followup";
   return (
-    <article className="resident-card">
-      <div className="resident-card-top">
-        <div className="resident-avatar">
-          {resident.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
-        </div>
-        <div className="resident-meta">
-          <h3 className="resident-name">{resident.name}</h3>
-          <span className="resident-detail">
-            {resident.age}y · {resident.sex} · {resident.purok}
-          </span>
-          <span className={`resident-status ${getStatusClass(resident.status)}`}>
-            {resident.status}
-          </span>
+    <article className="res-card">
+      <div className="res-card-top">
+        <div className="res-av">{initials}</div>
+        <div>
+          <div className="res-name">{resident.name}</div>
+          <div className="res-detail">{resident.age}y · {resident.sex} · {resident.purok}</div>
+          <span className={`res-status ${stsCls}`}>{resident.status}</span>
         </div>
       </div>
-
-      <div className="resident-scores">
-        <div className="score-item">
-          <span className="score-label">Engagement</span>
-          <div className="score-bar-wrap">
-            <div className="score-bar score-bar--engagement" style={{ width: `${resident.engagementScore}%` }} />
-          </div>
+      <div className="res-scores">
+        <div className="score-row">
+          <span className="score-lbl">Engagement</span>
+          <div className="sbar-wrap"><div className="sbar sbar-e" style={{ width: `${resident.engagementScore}%` }} /></div>
           <span className="score-num">{resident.engagementScore}</span>
         </div>
-        <div className="score-item">
-          <span className="score-label">Vulnerability</span>
-          <div className="score-bar-wrap">
-            <div className="score-bar score-bar--vulnerability" style={{ width: `${resident.vulnerabilityScore}%` }} />
-          </div>
+        <div className="score-row">
+          <span className="score-lbl">Vulnerability</span>
+          <div className="sbar-wrap"><div className="sbar sbar-v" style={{ width: `${resident.vulnerabilityScore}%` }} /></div>
           <span className="score-num">{resident.vulnerabilityScore}</span>
         </div>
       </div>
-
-      <div className="resident-card-footer">
-        <span className="segment-tag">{resident.segment}</span>
-        <span className={`risk-badge ${getRiskClass(resident.riskLevel)}`}>
-          {resident.riskLevel} Risk
-        </span>
+      <div className="res-footer">
+        <span className="seg-tag">{resident.segment}</span>
+        <span className={`risk-badge ${riskCls}`}>{resident.riskLevel} Risk</span>
       </div>
-
-      <button className="view-profile-btn" onClick={() => onViewProfile(resident)}>
-        View Profile →
-      </button>
+      <div className="res-btns">
+        <button className="btn btn-primary btn-sm" onClick={() => onView(resident)}>👁 View</button>
+        <button className="btn btn-ghost btn-sm" onClick={() => onEdit(resident)}>✏️ Edit</button>
+        <button className="btn btn-ghost btn-sm" onClick={() => onHistory(resident)}>📜 History</button>
+        <button className="btn btn-danger btn-sm" onClick={() => onDelete(resident)}>🗑</button>
+      </div>
     </article>
   );
 }
-
 export default ResidentCard;

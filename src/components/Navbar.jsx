@@ -1,52 +1,57 @@
-// Navbar.jsx – Navigation Component with Logout
-function Navbar({ activePage, onNavigate, currentUser, onLogout }) {
-  const navItems = [
+// src/components/Navbar.jsx
+function Navbar({ activePage, onNavigate, onLogout }) {
+  const nav = [
+    { section: "Overview" },
     { id: "dashboard", label: "Dashboard", icon: "⬡" },
+    { section: "Management" },
     { id: "residents", label: "Residents", icon: "◈" },
+    { id: "households", label: "Households", icon: "🏠" },
+    { id: "programs", label: "Programs", icon: "📌" },
+    { id: "cases", label: "Cases", icon: "📋" },
+    { section: "Analytics" },
     { id: "segments", label: "Segments", icon: "◉" },
     { id: "predictions", label: "ML Insights", icon: "◆" },
   ];
 
   return (
     <nav className="navbar">
-      <div className="navbar-brand">
-        <span className="brand-icon">◈</span>
-        <div className="brand-text">
-          <span className="brand-title">IRPSS</span>
-          <span className="brand-subtitle">Resident Intelligence</span>
+      <div className="nb-brand">
+        <div className="nb-icon">IR</div>
+        <div>
+          <div className="nb-title">IRPSS</div>
+          <div className="nb-sub">Resident Intelligence</div>
         </div>
       </div>
 
-      <ul className="nav-links">
-        {navItems.map((item) => (
-          <li key={item.id}>
-            <button
-              className={`nav-btn ${activePage === item.id ? "nav-btn--active" : ""}`}
-              onClick={() => onNavigate(item.id)}
-            >
-              <span className="nav-icon">{item.icon}</span>
-              <span className="nav-label">{item.label}</span>
-            </button>
-          </li>
-        ))}
+      <ul className="nb-links">
+        {nav.map((item, i) =>
+          item.section ? (
+            <li key={i}><div className="nb-section">{item.section}</div></li>
+          ) : (
+            <li key={item.id}>
+              <button
+                className={`nb-btn ${activePage === item.id ? "active" : ""}`}
+                onClick={() => onNavigate(item.id)}
+              >
+                <span className="nb-icon-sm">{item.icon}</span>
+                {item.label}
+              </button>
+            </li>
+          )
+        )}
       </ul>
 
-      <div className="navbar-footer">
-        <div className="user-badge">
-          <span className="user-avatar">
-            {currentUser?.name?.split(" ").map(n => n[0]).join("").slice(0, 2) || "BH"}
-          </span>
-          <div className="user-info">
-            <span className="user-name">{currentUser?.name || "Barangay Hall"}</span>
-            <span className="user-role">{currentUser?.role || "Admin"}</span>
+      <div className="nb-footer">
+        <div className="nb-user">
+          <div className="nb-av">AD</div>
+          <div>
+            <div className="nb-uname">Admin</div>
+            <div className="nb-urole">Barangay Hall</div>
           </div>
         </div>
-        <button className="logout-btn" onClick={onLogout}>
-          Logout →
-        </button>
+        <button className="nb-logout" onClick={onLogout}>⏏ Sign Out</button>
       </div>
     </nav>
   );
 }
-
 export default Navbar;

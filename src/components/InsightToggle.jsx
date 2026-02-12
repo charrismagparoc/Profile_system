@@ -1,38 +1,28 @@
-// InsightToggle.jsx — Interactive ML Insight Toggle Component (Task 3 - UI Interaction)
-// Uses props: title, insights
-
+// src/components/InsightToggle.jsx
 import { useState } from "react";
-
 function InsightToggle({ title, insights }) {
-  const [showInsights, setShowInsights] = useState(false);
-
+  const [open, setOpen] = useState(false);
   return (
-    <section className="insight-toggle">
-      <div className="insight-toggle-header">
-        <div>
-          <span className="insight-dot" />
-          <span className="insight-title">{title}</span>
-        </div>
+    <div className="insight-box">
+      <div className="insight-hdr">
+        <span><span className="insight-dot" /><span className="insight-ttl">{title}</span></span>
         <button
-          className={`toggle-btn ${showInsights ? "toggle-btn--active" : ""}`}
-          onClick={() => setShowInsights(!showInsights)}
+          className={`chip ${open ? "on" : ""}`}
+          onClick={() => setOpen(!open)}
         >
-          {showInsights ? "Hide Insights ↑" : "Show Insights ↓"}
+          {open ? "Hide ↑" : "Show ↓"}
         </button>
       </div>
-
-      {showInsights && (
-        <ul className="insights-list">
-          {insights.map((insight, idx) => (
-            <li key={idx} className="insight-item">
-              <span className="insight-bullet">◆</span>
-              {insight}
+      {open && (
+        <ul className="insight-list">
+          {insights.map((ins, i) => (
+            <li key={i} className="insight-li">
+              <span className="i-bullet">◆</span>{ins}
             </li>
           ))}
         </ul>
       )}
-    </section>
+    </div>
   );
 }
-
 export default InsightToggle;
